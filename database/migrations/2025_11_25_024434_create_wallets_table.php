@@ -11,12 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('wallets', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->unique()->constrained('users')->onDelete('cascade');
-            $table->integer('balance_robux')->default(0);
-            $table->timestamp('updated_at');
-        });
+        if (!Schema::hasTable('wallets')) {
+            Schema::create('wallets', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('user_id')->unique()->constrained('users')->onDelete('cascade');
+                $table->integer('balance_robux')->default(0);
+                $table->timestamp('updated_at');
+            });
+        }
     }
 
     /**

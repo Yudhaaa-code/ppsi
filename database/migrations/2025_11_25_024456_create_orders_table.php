@@ -18,7 +18,7 @@ return new class extends Migration
             $table->decimal('total_amount', 10, 2);
             $table->string('currency');
             $table->string('status');
-            $table->timestamp('created_at');
+            $table->timestamps();
         });
     }
 

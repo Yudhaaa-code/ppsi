@@ -22,6 +22,24 @@
         .float-animation { animation: float 6s ease-in-out infinite; }
         .float-animation-2 { animation: float2 8s ease-in-out infinite; animation-delay: 1s; }
         .pulse-animation { animation: pulse 3s ease-in-out infinite; }
+        
+        /* Autofill styles */
+         input:-webkit-autofill,
+         input:-webkit-autofill:hover, 
+         input:-webkit-autofill:focus, 
+         input:-webkit-autofill:active {
+             -webkit-box-shadow: 0 0 0 30px white inset !important;
+             -webkit-text-fill-color: #1e3a5f !important;
+             transition: background-color 5000s ease-in-out 0s;
+         }
+
+         /* Force input text color class */
+         .input-dark-text {
+             color: #1e3a5f !important;
+             background-color: white !important;
+             caret-color: #1e3a5f !important;
+             -webkit-text-fill-color: #1e3a5f !important;
+         }
     </style>
 </head>
 <body style="margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; overflow-x: hidden;">
@@ -75,8 +93,8 @@
                             type="email" 
                             required
                             value="{{ old('email') }}"
-                            style="width: 100%; padding: 0.75rem; border-radius: 0.25rem; border: none; font-size: 1rem; box-sizing: border-box;"
-                            class="@error('email') border-red-500 @enderror"
+                            style="width: 100%; padding: 0.75rem; border-radius: 0.25rem; border: none; font-size: 1rem; box-sizing: border-box; color: #1e3a5f !important; background-color: white !important;"
+                            class="input-dark-text @error('email') border-red-500 @enderror"
                         >
                         @error('email')
                             <p style="color: #fca5a5; font-size: 0.75rem; margin-top: 0.25rem;">{{ $message }}</p>
@@ -92,8 +110,8 @@
                                 name="password" 
                                 type="password" 
                                 required
-                                style="width: 100%; padding: 0.75rem 3rem 0.75rem 0.75rem; border-radius: 0.25rem; border: none; font-size: 1rem; box-sizing: border-box;"
-                                class="@error('password') border-red-500 @enderror"
+                                style="width: 100%; padding: 0.75rem 3rem 0.75rem 0.75rem; border-radius: 0.25rem; border: none; font-size: 1rem; box-sizing: border-box; color: #1e3a5f !important; background-color: white !important;"
+                                class="input-dark-text @error('password') border-red-500 @enderror"
                             >
                             <button 
                                 type="button" 

@@ -38,38 +38,46 @@
     </nav>
 
     <!-- Central Content Area (Light Gray with Carousel) -->
-    <div style="background-color: #e5e7eb; min-height: 60vh; display: flex; align-items: center; justify-content: center; position: relative; padding: 3rem 1rem;">
-        <div style="max-width: 1280px; width: 100%;">
+    <div style="background-color: #e5e7eb; position: relative;">
+        <div style="width: 100%;">
             <!-- Carousel Container -->
             <div style="position: relative;">
                 <!-- Carousel Arrow Left -->
-                <button id="carousel-prev" style="position: absolute; left: 0; top: 50%; transform: translateY(-50%); z-index: 10; background: rgba(255,255,255,0.8); border: none; border-radius: 50%; padding: 0.5rem; cursor: pointer; transition: background 0.3s;">
+                <button id="carousel-prev" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); z-index: 10; background: rgba(255,255,255,0.8); border: none; border-radius: 50%; padding: 0.5rem; cursor: pointer; transition: background 0.3s;">
                     <svg style="width: 1.5rem; height: 1.5rem; color: #1f2937;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                     </svg>
                 </button>
 
                 <!-- Carousel Arrow Right -->
-                <button id="carousel-next" style="position: absolute; right: 0; top: 50%; transform: translateY(-50%); z-index: 10; background: rgba(255,255,255,0.8); border: none; border-radius: 50%; padding: 0.5rem; cursor: pointer; transition: background 0.3s;">
+                <button id="carousel-next" style="position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); z-index: 10; background: rgba(255,255,255,0.8); border: none; border-radius: 50%; padding: 0.5rem; cursor: pointer; transition: background 0.3s;">
                     <svg style="width: 1.5rem; height: 1.5rem; color: #1f2937;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                     </svg>
                 </button>
 
                 <!-- Carousel Image -->
-                <div style="overflow: hidden; border-radius: 0.5rem;">
+                <div style="overflow: hidden;">
                     <img id="carousel-image" 
-                         src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&h=600&fit=crop" 
+                         src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600&h=900&fit=crop" 
                          alt="Carousel Image" 
-                         style="width: 100%; height: 500px; object-fit: cover; display: block;">
+                         style="width: 100%; height: 70vh; object-fit: cover; display: block;">
                 </div>
 
                 <!-- Carousel Indicators -->
-                <div style="display: flex; justify-content: center; margin-top: 1rem; gap: 0.5rem;">
+                <div style="display: flex; justify-content: center; position: absolute; bottom: 1rem; left: 0; right: 0; gap: 0.5rem;">
                     <button class="carousel-indicator" data-slide="0" style="width: 2rem; height: 0.25rem; background-color: white; border: none; border-radius: 0.25rem; cursor: pointer;"></button>
-                    <button class="carousel-indicator" data-slide="1" style="width: 2rem; height: 0.25rem; background-color: #9ca3af; border: none; border-radius: 0.25rem; cursor: pointer;"></button>
-                    <button class="carousel-indicator" data-slide="2" style="width: 2rem; height: 0.25rem; background-color: #9ca3af; border: none; border-radius: 0.25rem; cursor: pointer;"></button>
+                    <button class="carousel-indicator" data-slide="1" style="width: 2rem; height: 0.25rem; background-color: rgba(255,255,255,0.5); border: none; border-radius: 0.25rem; cursor: pointer;"></button>
+                    <button class="carousel-indicator" data-slide="2" style="width: 2rem; height: 0.25rem; background-color: rgba(255,255,255,0.5); border: none; border-radius: 0.25rem; cursor: pointer;"></button>
                 </div>
+            </div>
+
+            <!-- Robux Purchase Button -->
+            <div style="width: 100%; padding: 2rem 8rem 2rem 2rem; display: flex; justify-content: flex-end;">
+                <a href="{{ route('order.robux') }}" class="inline-flex bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white font-bold py-3 px-8 rounded-lg text-center text-lg shadow-lg transition duration-300 transform hover:-translate-y-1 items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                    BELI ROBUX SEKARANG
+                </a>
             </div>
         </div>
     </div>

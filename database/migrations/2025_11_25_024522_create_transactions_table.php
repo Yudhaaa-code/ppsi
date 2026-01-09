@@ -18,7 +18,8 @@ return new class extends Migration
             $table->string('payment_status');
             $table->string('provider_ref')->nullable();
             $table->decimal('amount', 10, 2);
-            $table->timestamp('created_at');
+            $table->text('payment_details')->nullable();
+            $table->timestamps();
         });
     }
 
