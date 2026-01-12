@@ -3,9 +3,9 @@
 @section('title', 'Order Robux - Six Monkeys')
 
 @section('content')
-<div class="bg-[#0f172a] min-h-screen text-white font-sans pt-16">
+<div class="bg-gradient-to-br from-[#081f3f] via-[#0b3c6d] to-[#06224a] min-h-screen text-white font-sans pt-16">
     <!-- Navbar -->
-    <nav class="bg-[#0f172a] border-b border-gray-700 fixed top-0 left-0 w-full z-50">
+    <nav class="bg-[#081f3f] border-b border-gray-700 fixed top-0 left-0 w-full z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
                 <div class="flex-shrink-0">
@@ -13,9 +13,17 @@
                 </div>
                 <div class="hidden md:block">
                     <div class="ml-10 flex items-baseline space-x-4">
-                        <a href="/" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Riwayat Transaksi</a>
-                        <a href="{{ route('register') }}" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Sign Up</a>
-                        <a href="{{ route('login') }}" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Login</a>
+                        @auth
+                            <a href="{{ route('dashboard') }}" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Dashboard</a>
+                            <form method="POST" action="{{ route('logout') }}" class="inline-block">
+                                @csrf
+                                <button type="submit" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Logout</button>
+                            </form>
+                        @endauth
+                        @guest
+                            <a href="{{ route('register') }}" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Sign Up</a>
+                            <a href="{{ route('login') }}" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Login</a>
+                        @endguest
                     </div>
                 </div>
             </div>
@@ -30,7 +38,7 @@
     </div>
 
     <!-- Info Bar -->
-    <div class="bg-[#0f172a] py-4 border-b border-gray-700">
+    <div class="bg-[#081f3f] py-4 border-b border-gray-700">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap justify-between items-center text-sm md:text-base">
             <div class="mb-2 md:mb-0">
                 <div class="font-bold">Roblox - Voucher</div>
@@ -224,7 +232,47 @@
                 </form>
             </div>
             
+            <!-- Login Modal -->
+            <div id="loginModal" class="fixed inset-0 z-[100] hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+                    <div class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75" aria-hidden="true" onclick="toggleLoginModal()"></div>
+                    <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+                    <div class="inline-block overflow-hidden text-left align-bottom transition-all transform bg-[#1e293b] rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full border border-gray-700">
+                        <div class="px-4 pt-5 pb-4 bg-[#1e293b] sm:p-6 sm:pb-4">
+                            <div class="sm:flex sm:items-start">
+                                <div class="flex items-center justify-center flex-shrink-0 w-12 h-12 mx-auto bg-blue-900 rounded-full sm:mx-0 sm:h-10 sm:w-10">
+                                    <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
+                                    </svg>
+                                </div>
+                                <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                                    <h3 class="text-lg font-medium leading-6 text-white" id="modal-title">Login Diperlukan</h3>
+                                    <div class="mt-2">
+                                        <p class="text-sm text-gray-300">Anda harus login terlebih dahulu untuk melakukan pembelian Robux.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="px-4 py-3 bg-[#0f172a] sm:px-6 sm:flex sm:flex-row-reverse">
+                            <a href="{{ route('login') }}" class="inline-flex justify-center w-full px-4 py-2 text-base font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">
+                                Login Sekarang
+                            </a>
+                            <button type="button" class="inline-flex justify-center w-full px-4 py-2 mt-3 text-base font-medium text-gray-300 bg-gray-700 border border-gray-600 rounded-md shadow-sm hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm" onclick="toggleLoginModal()">
+                                Batal
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <script>
+                function toggleLoginModal() {
+                    const modal = document.getElementById('loginModal');
+                    if (modal) {
+                        modal.classList.toggle('hidden');
+                    }
+                }
+
                 document.addEventListener('DOMContentLoaded', function() {
                     const orderForm = document.getElementById('orderForm');
                     const voucherCards = document.querySelectorAll('.voucher-card');
@@ -253,6 +301,13 @@
                     // Handle Form Submission
                     orderForm.addEventListener('submit', async function(e) {
                         e.preventDefault();
+
+                        // Check Login Status
+                        const isLoggedIn = {{ auth()->check() ? 'true' : 'false' }};
+                        if (!isLoggedIn) {
+                            toggleLoginModal();
+                            return;
+                        }
                         
                         // Basic Validation
                         if (!voucherPriceInput.value) {

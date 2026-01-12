@@ -11,4 +11,9 @@ class Transaction extends Model
     protected $casts = [
         'payment_details' => 'array',
     ];
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
+    }
 }

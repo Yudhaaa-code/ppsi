@@ -44,12 +44,29 @@ class OrderController extends Controller
         // Use user ID 1 as fallback for guest if not logged in
         $userId = Auth::check() ? Auth::id() : 1;
         
+        // Update user's username if logged in
+        if (Auth::check()) {
+            $user = Auth::user();
+            $user->username = $validated['account_data'];
+            $user->save();
+        }
+        
+        // Extract numeric value from voucher name (e.g., "80 Robux" -> 80)
+        $robuxAmount = 0;
+        if (preg_match('/\d+/', $validated['voucher_name'], $matches)) {
+            $robuxAmount = (int) $matches[0];
+        }
+
         $order = Order::create([
             'order_number' => 'ORD-' . time() . '-' . rand(100, 999),
             'user_id' => $userId,
             'total_amount' => $total,
             'currency' => 'IDR',
             'status' => 'pending',
+            'username' => $validated['account_data'],
+            'robux_amount' => $robuxAmount,
+            'input_type' => $validated['quantity'] . ' pcs',
+            'total_price' => $total,
         ]);
 
         // Prepare Core API Params
@@ -156,6 +173,13 @@ class OrderController extends Controller
 
         $paymentDetails = $transaction->payment_details;
         $paymentType = $paymentDetails['payment_type'] ?? 'unknown';
+        $paymentStatus = $transaction->payment_status ?? 'pending';
+        $paymentResult = 'pending';
+        if (in_array($paymentStatus, ['settlement', 'capture'], true)) {
+            $paymentResult = 'success';
+        } elseif (in_array($paymentStatus, ['deny', 'cancel', 'expire'], true)) {
+            $paymentResult = 'failed';
+        }
         
         $vaNumber = null;
         $bank = null;
@@ -190,6 +214,8 @@ class OrderController extends Controller
             'amount' => $order->total_amount,
             'item_name' => 'Robux Voucher', // Ideally fetch from order items
             'payment_type' => $paymentType,
+            'payment_status' => $paymentStatus,
+            'payment_result' => $paymentResult,
             'va_number' => $vaNumber,
             'bank' => $bank,
             'qr_url' => $qrUrl,

@@ -3,9 +3,9 @@
 @section('title', 'Payment - Six Monkeys')
 
 @section('content')
-<div class="bg-[#0f172a] min-h-screen text-white font-sans pt-16">
+<div class="bg-gradient-to-br from-[#081f3f] via-[#0b3c6d] to-[#06224a] min-h-screen text-white font-sans pt-16">
     <!-- Navbar (Simplified or same as app) -->
-    <nav class="bg-[#0f172a] border-b border-gray-700 fixed top-0 left-0 w-full z-50">
+    <nav class="bg-[#081f3f] border-b border-gray-700 fixed top-0 left-0 w-full z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
                 <div class="flex-shrink-0">
@@ -13,9 +13,17 @@
                 </div>
                 <div class="hidden md:block">
                     <div class="ml-10 flex items-baseline space-x-4">
-                        <a href="#" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Riwayat Transaksi</a>
-                        <a href="{{ route('register') }}" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Sign Up</a>
-                        <a href="{{ route('login') }}" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Login</a>
+                        @auth
+                            <a href="{{ route('dashboard') }}" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Dashboard</a>
+                            <form method="POST" action="{{ route('logout') }}" class="inline-block">
+                                @csrf
+                                <button type="submit" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Logout</button>
+                            </form>
+                        @endauth
+                        @guest
+                            <a href="{{ route('register') }}" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Sign Up</a>
+                            <a href="{{ route('login') }}" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Login</a>
+                        @endguest
                     </div>
                 </div>
             </div>
@@ -23,7 +31,7 @@
     </nav>
 
     <!-- Info Bar -->
-    <div class="bg-[#0f172a] py-4 border-b border-gray-700 mt-0">
+    <div class="bg-[#081f3f] py-4 border-b border-gray-700 mt-0">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap justify-between items-center text-sm md:text-base">
             <div class="mb-2 md:mb-0">
                 <div class="font-bold">Roblox - Voucher</div>
@@ -40,6 +48,41 @@
 
     <!-- Main Content -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        @if(($payment_result ?? 'pending') === 'success')
+            <div class="flex justify-center py-10">
+                <div class="bg-[#38bdf8] rounded-lg p-10 text-black shadow-lg w-full max-w-4xl min-h-[420px] flex flex-col items-center">
+                    <h2 class="font-bold text-2xl mt-2 mb-8">Pembayaran Berhasil</h2>
+                    <img src="{{ asset('images/payment-success.png') }}" alt="Pembayaran Berhasil" class="w-96 max-w-full rounded-lg shadow-md">
+                </div>
+            </div>
+        @elseif(($payment_result ?? 'pending') === 'failed')
+            <div class="flex justify-center py-10">
+                <div class="bg-[#38bdf8] rounded-lg p-10 text-black shadow-lg w-full max-w-4xl min-h-[420px] flex flex-col items-center">
+                    <h2 class="font-bold text-2xl mt-2 mb-10">Pembayaran Gagal</h2>
+                    <svg width="240" height="240" viewBox="0 0 240 240" aria-hidden="true">
+                        <defs>
+                            <linearGradient id="xRed" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0" stop-color="#ff7a7a" />
+                                <stop offset="0.45" stop-color="#ff2d2d" />
+                                <stop offset="1" stop-color="#b30000" />
+                            </linearGradient>
+                            <linearGradient id="xHighlight" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0" stop-color="#ffffff" stop-opacity="0.55" />
+                                <stop offset="0.6" stop-color="#ffffff" stop-opacity="0" />
+                            </linearGradient>
+                            <filter id="xShadow" x="-20%" y="-20%" width="140%" height="140%">
+                                <feDropShadow dx="0" dy="10" stdDeviation="8" flood-color="#000000" flood-opacity="0.35" />
+                            </filter>
+                        </defs>
+                        <g filter="url(#xShadow)">
+                            <rect x="106" y="25" width="28" height="190" rx="14" transform="rotate(45 120 120)" fill="url(#xRed)"/>
+                            <rect x="106" y="25" width="28" height="190" rx="14" transform="rotate(-45 120 120)" fill="url(#xRed)"/>
+                            <rect x="110" y="30" width="10" height="180" rx="5" transform="rotate(45 120 120)" fill="url(#xHighlight)"/>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+        @else
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             
             <!-- Left Column: Status & QR/VA -->
@@ -120,9 +163,11 @@
             </div>
             
         </div>
+        @endif
     </div>
 </div>
 
+@if(($payment_result ?? 'pending') === 'pending')
 <script>
     // Simple Countdown Timer
     // Assuming expiry_time is passed as a timestamp or we set a fixed 24h
@@ -149,4 +194,5 @@
     setInterval(updateTimer, 1000);
     updateTimer();
 </script>
+@endif
 @endsection

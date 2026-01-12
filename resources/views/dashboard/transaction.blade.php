@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Admin - Six Monkey's</title>
+    <title>Transaksi Robux - Six Monkey's</title>
     <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -19,17 +19,6 @@
     </script>
 </head>
 <body class="min-h-screen bg-gradient-to-br from-[#081f3f] via-[#0b3c6d] to-[#06224a] text-white">
-
-<?php
-$totalPendapatan = $totalRevenue ?? 0;
-$statistik = [
-    'total' => $totalOrders ?? 0,
-    'proses' => $pendingOrders ?? 0,
-    'sukses' => $completedOrders ?? 0,
-    'gagal' => $failedOrders ?? 0,
-    'batal' => $cancelledOrders ?? 0,
-];
-?>
 
 <!-- Mobile Header -->
 <div class="md:hidden flex items-center justify-between p-4 bg-[#081f3f]/90 backdrop-blur-sm sticky top-0 z-30 border-b border-white/10">
@@ -78,7 +67,7 @@ $statistik = [
             </button>
         </div>
         <nav class="space-y-3">
-            <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition">
+            <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-white/10 transition">
                 <span>🏠</span>
                 <span>Dashboard Admin</span>
             </a>
@@ -86,7 +75,7 @@ $statistik = [
                 <span>👥</span>
                 <span>Manage Users</span>
             </a>
-            <a href="{{ route('admin.robux') }}" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-white/10 transition">
+            <a href="{{ route('admin.robux') }}" class="flex items-center gap-3 px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition">
                 <span>🛒</span>
                 <span>Pembelian Robux</span>
             </a>
@@ -174,7 +163,7 @@ $statistik = [
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '<?= csrf_token() ?>'
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     },
                     body: JSON.stringify({
                         manual_status: newStatus
@@ -200,45 +189,61 @@ $statistik = [
         }
         </script>
 
-        <div class="flex flex-col md:flex-row gap-6 mb-10">
-            <div class="inline-block bg-blue-600/80 px-8 py-5 rounded-xl shadow-lg w-full md:w-auto">
-                <p class="text-sm opacity-80">Total Pendapatan</p>
-                <p class="text-xl font-bold mt-1">Rp <?= number_format($totalPendapatan, 0, ',', '.') ?></p>
-            </div>
-            
-            <a href="{{ route('users.index') }}" class="inline-block bg-purple-600/80 px-8 py-5 rounded-xl shadow-lg hover:bg-purple-700/80 transition w-full md:w-auto">
-                <p class="text-sm opacity-80">Manage Users</p>
-                <p class="text-xl font-bold mt-1">Total User: <?= number_format($totalUsers ?? 0, 0, ',', '.') ?></p>
-                <p class="text-xs opacity-70 mt-2">Klik untuk mengelola data pengguna</p>
-            </a>
-        </div>
+        <!-- Transaksi Robux -->
+        <h2 class="text-lg font-semibold mb-4">Transaksi Robux</h2>
 
-        <h2 class="text-lg font-semibold mb-4">Jumlah Transaksi Robux Hari Ini</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-12">
-            <div class="bg-blue-500/80 rounded-xl p-4 text-center">
-                <p class="text-2xl font-bold"><?= $statistik['total'] ?></p>
-                <p class="text-sm opacity-80">Total</p>
+        <!-- Filter Form -->
+        <form method="GET" action="{{ route('admin.robux') }}" class="mb-6 flex flex-wrap gap-4 items-end bg-black/20 p-4 rounded-xl">
+            <!-- Search -->
+            <div>
+                <label for="search" class="block text-sm font-medium mb-1">Cari ID Roblox</label>
+                <input type="text" name="search" id="search" value="{{ request('search') }}" placeholder="Username..." 
+                       class="px-4 py-2 bg-white/10 border border-white/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white placeholder-gray-400">
             </div>
-            <div class="bg-blue-500/80 rounded-xl p-4 text-center">
-                <p class="text-2xl font-bold"><?= $statistik['proses'] ?></p>
-                <p class="text-sm opacity-80">Dalam Proses</p>
-            </div>
-            <div class="bg-blue-500/80 rounded-xl p-4 text-center">
-                <p class="text-2xl font-bold"><?= $statistik['sukses'] ?></p>
-                <p class="text-sm opacity-80">Sukses</p>
-            </div>
-            <div class="bg-blue-500/80 rounded-xl p-4 text-center">
-                <p class="text-2xl font-bold"><?= $statistik['gagal'] ?></p>
-                <p class="text-sm opacity-80">Gagal</p>
-            </div>
-            <div class="bg-blue-500/80 rounded-xl p-4 text-center">
-                <p class="text-2xl font-bold"><?= $statistik['batal'] ?></p>
-                <p class="text-sm opacity-80">Batal</p>
-            </div>
-        </div>
 
-        <!-- Riwayat Transaksi -->
-        <h2 class="text-lg font-semibold mb-4">Riwayat Transaksi Terbaru Hari Ini</h2>
+            <!-- Status -->
+            <div>
+                <label for="status" class="block text-sm font-medium mb-1">Status</label>
+                <select name="status" id="status" class="px-4 py-2 bg-white/10 border border-white/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white [&>option]:bg-[#081f3f]">
+                    <option value="">Semua Status</option>
+                    <option value="on progress" {{ request('status') == 'on progress' ? 'selected' : '' }}>On Progress</option>
+                    <option value="success" {{ request('status') == 'success' ? 'selected' : '' }}>Success</option>
+                    <option value="failed" {{ request('status') == 'failed' ? 'selected' : '' }}>Failed</option>
+                    <option value="cancelled" {{ request('status') == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
+                </select>
+            </div>
+
+            <!-- Payment Status -->
+            <div>
+                <label for="payment_status" class="block text-sm font-medium mb-1">Pembayaran</label>
+                <select name="payment_status" id="payment_status" class="px-4 py-2 bg-white/10 border border-white/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white [&>option]:bg-[#081f3f]">
+                    <option value="">Semua Pembayaran</option>
+                    <option value="settlement" {{ request('payment_status') == 'settlement' ? 'selected' : '' }}>Settlement (Paid)</option>
+                    <option value="pending" {{ request('payment_status') == 'pending' ? 'selected' : '' }}>Pending</option>
+                    <option value="expire" {{ request('payment_status') == 'expire' ? 'selected' : '' }}>Expire</option>
+                    <option value="cancel" {{ request('payment_status') == 'cancel' ? 'selected' : '' }}>Cancel</option>
+                    <option value="deny" {{ request('payment_status') == 'deny' ? 'selected' : '' }}>Deny</option>
+                </select>
+            </div>
+
+            <!-- Date -->
+            <div>
+                <label for="date" class="block text-sm font-medium mb-1">Tanggal</label>
+                <input type="date" name="date" id="date" value="{{ request('date') }}" 
+                       class="px-4 py-2 bg-white/10 border border-white/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white [color-scheme:dark]">
+            </div>
+
+            <!-- Buttons -->
+            <div class="flex gap-2">
+                <button type="submit" class="px-6 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition font-medium">
+                    Filter
+                </button>
+                <a href="{{ route('admin.robux') }}" class="px-6 py-2 bg-gray-600 hover:bg-gray-700 rounded-lg transition font-medium flex items-center justify-center">
+                    Reset
+                </a>
+            </div>
+        </form>
+
         <div class="bg-black/30 rounded-xl p-6 overflow-x-auto">
             <table class="min-w-full text-sm">
                 <thead class="border-b border-white/20">
@@ -253,41 +258,46 @@ $statistik = [
                     </tr>
                 </thead>
                 <tbody class="opacity-70">
-                    <?php if (isset($recentOrders) && $recentOrders->count() > 0) { ?>
-                        <?php foreach ($recentOrders as $order) { ?>
+                    @if(isset($recentOrders) && $recentOrders->count() > 0)
+                        @foreach($recentOrders as $order)
                         <tr>
-                            <td class="py-2"><?= $order->username ?? 'N/A' ?></td>
-                            <td class="py-2"><?= number_format($order->robux_amount ?? 0, 0, ',', '.') ?></td>
-                            <td class="py-2"><?= $order->input_type ?? 'N/A' ?></td>
-                            <td class="py-2">Rp <?= number_format($order->total_price ?? 0, 0, ',', '.') ?></td>
-                            <td class="py-2"><?= $order->created_at->format('d/m/Y H:i') ?></td>
+                            <td class="py-2">{{ $order->username ?? 'N/A' }}</td>
+                            <td class="py-2">{{ number_format($order->robux_amount ?? 0, 0, ',', '.') }}</td>
+                            <td class="py-2">{{ $order->input_type ?? 'N/A' }}</td>
+                            <td class="py-2">Rp {{ number_format($order->total_price ?? 0, 0, ',', '.') }}</td>
+                            <td class="py-2">{{ $order->created_at->format('d/m/Y H:i') }}</td>
                             <td class="py-2">
-                                <?php
+                                @php
                                 $paymentStatus = $order->transactions()->latest()->first()->payment_status ?? 'pending';
                                 $paymentClass = $paymentStatus == 'settlement' ? 'bg-green-500' : ($paymentStatus == 'pending' ? 'bg-yellow-500' : 'bg-red-500');
-                                ?>
-                                <span class="px-2 py-1 rounded text-xs <?= $paymentClass ?>">
-                                    <?= ucfirst($paymentStatus) ?>
+                                @endphp
+                                <span class="px-2 py-1 rounded text-xs {{ $paymentClass }}">
+                                    {{ ucfirst($paymentStatus) }}
                                 </span>
                             </td>
                             <td class="py-2">
-                                <select onchange="updateManualStatus('<?= $order->id ?>', this.value)" class="px-2 py-1 rounded text-xs bg-blue-500 text-white border-none focus:outline-none focus:ring-1 focus:ring-blue-300">
-                                    <option value="on progress" <?= $order->manual_status == 'on progress' ? 'selected' : '' ?>>On Progress</option>
-                                    <option value="success" <?= $order->manual_status == 'success' ? 'selected' : '' ?>>Success</option>
-                                    <option value="failed" <?= $order->manual_status == 'failed' ? 'selected' : '' ?>>Failed</option>
-                                    <option value="cancelled" <?= $order->manual_status == 'cancelled' ? 'selected' : '' ?>>Cancelled</option>
+                                <select onchange="updateManualStatus('{{ $order->id }}', this.value)" class="px-2 py-1 rounded text-xs bg-blue-500 text-white border-none focus:outline-none focus:ring-1 focus:ring-blue-300">
+                                    <option value="on progress" {{ $order->manual_status == 'on progress' ? 'selected' : '' }}>On Progress</option>
+                                    <option value="success" {{ $order->manual_status == 'success' ? 'selected' : '' }}>Success</option>
+                                    <option value="failed" {{ $order->manual_status == 'failed' ? 'selected' : '' }}>Failed</option>
+                                    <option value="cancelled" {{ $order->manual_status == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
                                 </select>
                             </td>
                         </tr>
-                        <?php } ?>
-                    <?php } else { ?>
+                        @endforeach
+                    @else
                         <tr>
                             <td colspan="7" class="py-6 text-center">Belum ada transaksi</td>
                         </tr>
-                    <?php } ?>
+                    @endif
                 </tbody>
             </table>
         </div>
+        @if(isset($recentOrders) && method_exists($recentOrders, 'links'))
+            <div class="mt-4">
+                {!! $recentOrders->links() !!}
+            </div>
+        @endif
     </main>
 </div>
 

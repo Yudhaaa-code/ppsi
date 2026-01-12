@@ -65,9 +65,6 @@ class BoardCardController extends Controller
             if (Schema::hasColumn('board_cards', 'activities')) {
             $payload['activities'] = $data['activities'] ?? [];
         }
-        if (Schema::hasColumn('board_cards', 'activities')) {
-            $updates['activities'] = $data['activities'] ?? [];
-        }
         if (Schema::hasColumn('board_cards', 'members')) {
                 $payload['members'] = $data['members'] ?? [];
             }

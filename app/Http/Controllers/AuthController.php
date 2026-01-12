@@ -95,8 +95,7 @@ class AuthController extends Controller
      */
     private function redirectBasedOnRole(User $user)
     {
-        // Setelah login, semua role diarahkan ke beranda.
-        // Dashboard khusus role bisa diakses dari menu/profile.
+        // Redirect semua user ke halaman beranda setelah login
         return redirect()->route('home');
     }
 }
