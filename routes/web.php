@@ -46,6 +46,7 @@ Route::middleware('auth')->group(function () {
     // Dashboard Routes with Role Middleware
     Route::middleware('role:customer')->group(function () {
         Route::get('/customer/dashboard', [DashboardController::class, 'customer'])->name('customer.dashboard');
+        Route::get('/customer/transactions', [DashboardController::class, 'transactions'])->name('customer.transactions');
     });
 
     Route::middleware('role:developer')->group(function () {

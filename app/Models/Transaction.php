@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+use App\Models\Order;
+
 class Transaction extends Model
 {
     protected $guarded = [];
