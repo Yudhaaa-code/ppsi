@@ -7,19 +7,14 @@
     <title>Developer Board - SIX MONKEY'S</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="m-0 p-0 font-sans" style="background: linear-gradient(135deg, #0a2f63 0%, #0d3f74 40%, #0d447e 70%, #0b4274 100%); min-height:100vh;">
+    <body class="min-h-screen bg-gradient-to-br from-[#081f3f] via-[#0b3c6d] to-[#06224a] text-white">
     <!-- Header -->
     <div class="flex items-center justify-between px-6 py-5">
         <div>
             <h1 class="text-white text-2xl font-bold uppercase tracking-wide">SIX MONKEY'S</h1>
         </div>
         <div class="flex items-center gap-3 text-white">
-            <div class="flex items-center gap-3">
-                <span class="w-9 h-9 rounded-full border border-white/50 flex items-center justify-center text-sm">🧭</span>
-                <span class="w-9 h-9 rounded-full border border-white/50 flex items-center justify-center text-sm">🔍</span>
-                <span class="w-9 h-9 rounded-full border border-white/50 flex items-center justify-center text-sm">❤️</span>
-                <span class="w-9 h-9 rounded-full border border-white/50 flex items-center justify-center text-sm">🔗</span>
-            </div>
+            
             <div class="flex items-center gap-2 ml-4">
                 <span class="text-sm font-semibold">{{ ucfirst(Auth::user()->role ?? 'Developer') }}</span>
                 <div class="w-10 h-10 rounded-full bg-white text-slate-900 flex items-center justify-center font-bold uppercase">
@@ -40,99 +35,120 @@
 
     <!-- Board Container -->
     <div class="px-6 py-5 overflow-x-auto">
-        <div class="flex gap-5 min-w-max items-start">
+        <div class="flex flex-col md:flex-row gap-5 w-full md:w-max items-start">
             <!-- Today List -->
-            <div class="w-80 min-w-[320px] bg-amber-100 rounded-lg p-3 flex-shrink-0 shadow">
-                <div class="flex items-center justify-between mb-2">
+            <div class="w-full md:w-80 md:min-w-[320px] bg-amber-100 rounded-lg p-3 flex-shrink-0 shadow transition-all duration-300">
+                <div class="flex items-center justify-between mb-2 cursor-pointer md:cursor-default" onclick="toggleList('today-content', 'today-chevron')">
                     <h2 class="text-sm font-semibold text-amber-900 flex items-center gap-2">
                         Today
                         <span class="w-4 h-4 border border-amber-900/60 rounded-sm bg-white/40"></span>
                     </h2>
                     <div class="flex items-center gap-2">
-                        <button class="p-1 hover:bg-amber-200 rounded" title="List view">
-                            <svg class="w-4 h-4 text-amber-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h10" />
-                            </svg>
-                        </button>
-                        <button class="p-1 hover:bg-amber-200 rounded" title="More">
-                            <svg class="w-4 h-4 text-amber-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01" />
-                            </svg>
-                        </button>
+                        <svg id="today-chevron" class="w-5 h-5 text-amber-900 md:hidden transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                        <div class="hidden md:flex items-center gap-2">
+                            <button class="p-1 hover:bg-amber-200 rounded" title="List view">
+                                <svg class="w-4 h-4 text-amber-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h10" />
+                                </svg>
+                            </button>
+                            <button class="p-1 hover:bg-amber-200 rounded" title="More">
+                                <svg class="w-4 h-4 text-amber-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01" />
+                                </svg>
+                            </button>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Cards container -->
-                <div id="today-cards" class="space-y-2 mb-2">
-                    <!-- cards will be injected here -->
-                </div>
+                <div id="today-content" class="hidden md:block">
+                    <!-- Cards container -->
+                    <div id="today-cards" class="space-y-2 mb-2">
+                        <!-- cards will be injected here -->
+                    </div>
 
-                <!-- Add Card button -->
-                <button
-                    id="btn-add-today"
-                    class="w-full text-left text-xs text-amber-900 px-2 py-1 rounded hover:bg-amber-200">
-                    + Add Card
-                </button>
+                    <!-- Add Card button -->
+                    <button
+                        id="btn-add-today"
+                        class="w-full text-left text-xs text-amber-900 px-2 py-1 rounded hover:bg-amber-200">
+                        + Add Card
+                    </button>
+                </div>
             </div>
 
             <!-- Weekly List -->
-            <div class="w-80 min-w-[320px] bg-sky-100 rounded-lg p-3 flex-shrink-0 shadow">
-                <div class="flex items-center justify-between mb-2">
+            <div class="w-full md:w-80 md:min-w-[320px] bg-sky-100 rounded-lg p-3 flex-shrink-0 shadow transition-all duration-300">
+                <div class="flex items-center justify-between mb-2 cursor-pointer md:cursor-default" onclick="toggleList('weekly-content', 'weekly-chevron')">
                     <h2 class="text-sm font-semibold text-sky-900 flex items-center gap-2">
                         Weekly
                         <span class="w-4 h-4 border border-sky-900/60 rounded-sm bg-white/40"></span>
                     </h2>
                     <div class="flex items-center gap-2">
-                        <button class="p-1 hover:bg-sky-200 rounded" title="List view">
-                            <svg class="w-4 h-4 text-sky-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h10" />
-                            </svg>
-                        </button>
-                        <button class="p-1 hover:bg-sky-200 rounded" title="More">
-                            <svg class="w-4 h-4 text-sky-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01" />
-                            </svg>
-                        </button>
+                        <svg id="weekly-chevron" class="w-5 h-5 text-sky-900 md:hidden transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                        <div class="hidden md:flex items-center gap-2">
+                            <button class="p-1 hover:bg-sky-200 rounded" title="List view">
+                                <svg class="w-4 h-4 text-sky-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h10" />
+                                </svg>
+                            </button>
+                            <button class="p-1 hover:bg-sky-200 rounded" title="More">
+                                <svg class="w-4 h-4 text-sky-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01" />
+                                </svg>
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <div id="week-cards" class="space-y-2 mb-2"></div>
-                <button
-                    id="btn-add-weekly"
-                    class="w-full text-left text-xs text-sky-900 px-2 py-1 rounded hover:bg-sky-200">
-                    + Add Card
-                </button>
+                <div id="weekly-content" class="hidden md:block">
+                    <div id="week-cards" class="space-y-2 mb-2"></div>
+                    <button
+                        id="btn-add-weekly"
+                        class="w-full text-left text-xs text-sky-900 px-2 py-1 rounded hover:bg-sky-200">
+                        + Add Card
+                    </button>
+                </div>
             </div>
 
             <!-- Later List -->
-            <div class="w-80 min-w-[320px] bg-pink-100 rounded-lg p-3 flex-shrink-0 shadow">
-                <div class="flex items-center justify-between mb-2">
+            <div class="w-full md:w-80 md:min-w-[320px] bg-pink-100 rounded-lg p-3 flex-shrink-0 shadow transition-all duration-300">
+                <div class="flex items-center justify-between mb-2 cursor-pointer md:cursor-default" onclick="toggleList('later-content', 'later-chevron')">
                     <h2 class="text-sm font-semibold text-rose-900 flex items-center gap-2">
                         Later
                         <span class="w-4 h-4 border border-rose-900/60 rounded-sm bg-white/40"></span>
                     </h2>
                     <div class="flex items-center gap-2">
-                        <button class="p-1 hover:bg-pink-200 rounded" title="List view">
-                            <svg class="w-4 h-4 text-rose-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h10" />
-                            </svg>
-                        </button>
-                        <button class="p-1 hover:bg-pink-200 rounded" title="More">
-                            <svg class="w-4 h-4 text-rose-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01" />
-                            </svg>
-                        </button>
+                        <svg id="later-chevron" class="w-5 h-5 text-rose-900 md:hidden transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                        <div class="hidden md:flex items-center gap-2">
+                            <button class="p-1 hover:bg-pink-200 rounded" title="List view">
+                                <svg class="w-4 h-4 text-rose-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h10" />
+                                </svg>
+                            </button>
+                            <button class="p-1 hover:bg-pink-200 rounded" title="More">
+                                <svg class="w-4 h-4 text-rose-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01" />
+                                </svg>
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <div id="later-cards" class="space-y-2 mb-2"></div>
-                <button
-                    id="btn-add-later"
-                    class="w-full text-left text-xs text-rose-900 px-2 py-1 rounded hover:bg-pink-200">
-                    + Add Card
-                </button>
+                <div id="later-content" class="hidden md:block">
+                    <div id="later-cards" class="space-y-2 mb-2"></div>
+                    <button
+                        id="btn-add-later"
+                        class="w-full text-left text-xs text-rose-900 px-2 py-1 rounded hover:bg-pink-200">
+                        + Add Card
+                    </button>
+                </div>
             </div>
 
             <!-- Add Another List Button -->
-            <div class="w-80 min-w-[320px] flex-shrink-0">
+            <div class="w-full md:w-80 md:min-w-[320px] flex-shrink-0">
                 <button class="w-full bg-emerald-300 rounded-lg px-3 py-3 text-left text-sm font-semibold text-emerald-900 hover:bg-emerald-200">
                     + Add Another List
                 </button>
@@ -141,10 +157,11 @@
     </div>
 
     <!-- Main Card Modal (Frame 3) -->
-    <div id="card-modal" class="fixed inset-0 bg-black/60 hidden items-center justify-center z-40 backdrop-blur-sm">
-        <div class="bg-[#1e1e1e] text-[#b6c2cf] rounded-xl w-full max-w-[1180px] shadow-2xl relative">
+    <div id="card-modal" class="fixed inset-0 bg-black/60 hidden z-40 backdrop-blur-sm overflow-y-auto">
+        <div class="flex min-h-full items-center justify-center p-0 md:p-4">
+            <div class="bg-[#1e1e1e] text-[#b6c2cf] rounded-none md:rounded-xl w-full max-w-[1180px] shadow-2xl relative min-h-screen md:min-h-0">
             <!-- Header bar -->
-            <div class="sticky top-0 z-10 bg-[#1e1e1e] flex items-center justify-between px-6 py-4 border-b border-[#2c333a]">
+            <div class="sticky top-0 z-10 bg-[#1e1e1e] flex items-center justify-between px-4 md:px-6 py-4 border-b border-[#2c333a]">
                 <div class="flex items-center gap-2 relative">
                     <button class="flex items-center gap-2 text-sm font-semibold text-[#b6c2cf] hover:bg-[#A6C5E229] px-2 py-1 rounded transition-colors pointer-events-none">
                         <span id="modal-list-name">Today</span>
@@ -166,15 +183,15 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-[1fr_400px] gap-8 px-6 pb-8 pt-6">
+            <div class="grid grid-cols-1 md:grid-cols-[1fr_400px] gap-8 px-6 pb-8 pt-10 md:pt-6">
                 <!-- Left main column (scrollable) -->
-                <div class="space-y-6 overflow-y-auto max-h-[75vh] pr-2">
-                    <div class="pb-2">
+            <div class="space-y-6 md:overflow-y-auto md:max-h-[75vh] pr-2">
+                <div class="pb-2">
                         <div class="flex items-start justify-between gap-4">
                             <div class="flex items-start gap-4 flex-1">
-                                <button id="btn-complete-modal" class="mt-1.5 w-6 h-6 rounded-full border border-[#9fadbc] flex items-center justify-center text-[#b6c2cf] text-xs font-bold flex-shrink-0" title="Mark complete"></button>
+                                <button id="btn-complete-modal" class="mt-2.5 w-6 h-6 rounded-full border border-[#9fadbc] flex items-center justify-center text-[#b6c2cf] text-xs font-bold flex-shrink-0" title="Mark complete"></button>
                                 <div class="flex-1">
-                                    <input id="card-title" type="text" class="mt-1 bg-transparent border-none text-xl font-bold text-[#b6c2cf] focus:ring-0 w-full p-0 placeholder-[#9fadbc]" value="selesaikan fitur anjing">
+                                    <input id="card-title" type="text" class="mt-2 bg-transparent border-none text-xl font-bold text-[#b6c2cf] focus:ring-0 w-full p-0 placeholder-[#9fadbc]" value="selesaikan fitur anjing">
                                 </div>
                             </div>
                         </div>
@@ -352,6 +369,7 @@
             </div>
         </div>
     </div>
+</div>
 
     <!-- Add to card popup (Frame 4) -->
     <div id="popup-add-to-card" class="fixed inset-0 hidden z-50">
@@ -2125,5 +2143,24 @@
             <button onclick="performDelete()" class="w-full bg-[#f87168] hover:bg-[#fe8f8f] text-[#1d2125] font-semibold py-1.5 rounded-[3px] text-sm">Delete comment</button>
         </div>
     </div>
+
+    <script>
+        function toggleList(contentId, chevronId) {
+            // Hanya aktif di mobile (bisa dicek dengan window.innerWidth atau simply biarkan css md:hidden menghandle icon)
+            // Tapi karena function ini dipanggil onclick div, kita perlu cek apakah sedang di mobile atau tidak agar tidak mengganggu desktop jika user klik header.
+            if (window.innerWidth >= 768) return; 
+
+            const content = document.getElementById(contentId);
+            const chevron = document.getElementById(chevronId);
+            
+            content.classList.toggle('hidden');
+            
+            if (content.classList.contains('hidden')) {
+                chevron.style.transform = 'rotate(0deg)';
+            } else {
+                chevron.style.transform = 'rotate(180deg)';
+            }
+        }
+    </script>
 </body>
 </html>

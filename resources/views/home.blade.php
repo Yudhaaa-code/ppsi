@@ -59,7 +59,7 @@
                 <!-- Carousel Image -->
                 <div style="overflow: hidden;">
                     <img id="carousel-image" 
-                         src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600&h=900&fit=crop" 
+                         src="{{ asset('images/home1.png') }}" 
                          alt="Carousel Image" 
                          style="width: 100%; height: 70vh; object-fit: cover; display: block;">
                 </div>
@@ -76,7 +76,7 @@
             <div style="width: 100%; padding: 2rem 8rem 2rem 2rem; display: flex; justify-content: flex-end;">
                 <a href="{{ route('order.robux') }}" class="inline-flex bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white font-bold py-3 px-8 rounded-lg text-center text-lg shadow-lg transition duration-300 transform hover:-translate-y-1 items-center gap-2">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-                    BELI ROBUX SEKARANG
+                    BELI ROBUX SEKARANG!
                 </a>
             </div>
         </div>
@@ -89,25 +89,22 @@
                 <!-- Left Column - Company Profile -->
                 <div>
                     <h2 style="font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem;">Company Profile Six Monkey</h2>
-                    <p style="color: #d1d5db; font-size: 1.125rem; margin: 0;">Isinya orang-orang keren dah pokonya</p>
+                    <p style="color: #d1d5db; font-size: 1.125rem; margin: 0; text-align: justify;">Welcome to Six Monkeys Studio.
+We are new studio, we are currently a beginner. so dont expect so much from our game. But we try our best to give player the best experience on our map. Join for future update and future map from us.</p>
                 </div>
 
                 <!-- Right Column - Projects -->
                 <div>
                     <h2 style="font-size: 1.5rem; font-weight: bold; margin-bottom: 1.5rem;">Proyek kami</h2>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                        <!-- Project Card 1 -->
-                        <div style="background-color: #d1d5db; border-radius: 0.5rem; aspect-ratio: 1; display: flex; align-items: center; justify-content: center;">
-                            <svg style="width: 5rem; height: 5rem; color: #4b5563;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                            </svg>
+                        <!-- Project Card 1: Western Hangout -->
+                        <div style="background-color: #d1d5db; border-radius: 0.5rem; aspect-ratio: 1; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+                            <img src="{{ asset('images/western.jpeg') }}" alt="Western Hangout" style="width: 100%; height: 100%; object-fit: cover;">
                         </div>
 
-                        <!-- Project Card 2 -->
-                        <div style="background-color: #d1d5db; border-radius: 0.5rem; aspect-ratio: 1; display: flex; align-items: center; justify-content: center;">
-                            <svg style="width: 5rem; height: 5rem; color: #4b5563;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                            </svg>
+                        <!-- Project Card 2: Mount Gede -->
+                        <div style="background-color: #d1d5db; border-radius: 0.5rem; aspect-ratio: 1; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+                            <img src="{{ asset('images/gn gede.jpeg') }}" alt="Mount Gede" style="width: 100%; height: 100%; object-fit: cover;">
                         </div>
                     </div>
                 </div>
@@ -118,9 +115,9 @@
     <!-- Carousel JavaScript -->
     <script>
         const carouselImages = [
-            'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&h=600&fit=crop',
-            'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=1200&h=600&fit=crop',
-            'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1200&h=600&fit=crop'
+            "{{ asset('images/home1.png') }}",
+            "{{ asset('images/home2.png') }}",
+            "{{ asset('images/home3.png') }}"
         ];
         
         let currentSlide = 0;
