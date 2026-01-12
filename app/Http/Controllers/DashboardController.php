@@ -7,8 +7,6 @@ use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\Order;
-use App\Models\Transaction;
 
 class DashboardController extends Controller
 {

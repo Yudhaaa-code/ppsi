@@ -7,42 +7,58 @@
     <title>Developer Board - SIX MONKEY'S</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="m-0 p-0 font-sans" style="background: linear-gradient(135deg, #0a2f63 0%, #0d3f74 40%, #0d447e 70%, #0b4274 100%); min-height:100vh;">
-    <!-- Header -->
-    <div class="flex items-center justify-between px-6 py-5">
-        <div>
-            <h1 class="text-white text-2xl font-bold uppercase tracking-wide">SIX MONKEY'S</h1>
-        </div>
-        <div class="flex items-center gap-3 text-white">
-            <div class="flex items-center gap-3">
-                <span class="w-9 h-9 rounded-full border border-white/50 flex items-center justify-center text-sm">🧭</span>
-                <span class="w-9 h-9 rounded-full border border-white/50 flex items-center justify-center text-sm">🔍</span>
-                <span class="w-9 h-9 rounded-full border border-white/50 flex items-center justify-center text-sm">❤️</span>
-                <span class="w-9 h-9 rounded-full border border-white/50 flex items-center justify-center text-sm">🔗</span>
-            </div>
-            <div class="flex items-center gap-2 ml-4">
-                <span class="text-sm font-semibold">{{ ucfirst(Auth::user()->role ?? 'Developer') }}</span>
-                <div class="w-10 h-10 rounded-full bg-white text-slate-900 flex items-center justify-center font-bold uppercase">
-                    {{ strtoupper(substr(Auth::user()->name, 0, 2)) }}
-                </div>
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" class="border border-white text-white text-xs px-3 py-1 rounded hover:bg-white hover:text-slate-900 transition">
-                        Logout
-                    </button>
-                </form>
-            </div>
-        </div>
-    </div>
+<body class="font-sans antialiased">
+    <div class="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-blue-800 text-white">
+        <div class="relative">
+            <div class="flex flex-col md:flex-row min-h-screen">
+                <!-- Sidebar -->
+                <aside class="w-full md:w-64 px-4 md:px-8 py-6 md:py-10">
+                    <div class="mb-8 pl-3">
+                        <a href="/" class="text-2xl font-bold uppercase tracking-wider hover:text-blue-200 transition">SIX MONKEY'S</a>
+                    </div>
+                    <nav class="space-y-4">
+                        <a href="{{ route('developer.dashboard') }}" class="flex items-center gap-3 text-slate-200 bg-white/10 rounded-md px-3 py-2 shadow-md">
+                            <span class="bg-slate-800/60 p-2 rounded-md flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path d="M12 3.3l8 6.2V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1V9.5l8-6.2z" fill="currentColor" />
+                                    <rect x="9" y="13" width="6" height="6" rx="1" fill="#071133" opacity="0.12" />
+                                </svg>
+                            </span>
+                            <span class="font-medium">Dashboard</span>
+                        </a>
+                        
+                        <!-- Logout -->
+                        <form method="POST" action="{{ route('logout') }}" class="mt-8 pt-8 border-t border-white/10">
+                            @csrf
+                            <button type="submit" class="w-full flex items-center gap-3 text-slate-200 hover:bg-red-500/20 hover:text-red-200 rounded-md px-3 py-2 transition">
+                                <span class="p-2 flex items-center justify-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                                    </svg>
+                                </span>
+                                <span class="font-medium">Logout</span>
+                            </button>
+                        </form>
+                    </nav>
+                </aside>
 
-    <!-- Board Title -->
-    <div class="px-6 text-white text-sm font-semibold tracking-wide">BOARD</div>
+                <!-- Main -->
+                <main class="flex-1 px-4 md:px-16 py-6 md:py-10 overflow-hidden">
+                    <div class="flex items-center justify-between mb-6">
+                         <div class="text-white text-sm font-semibold tracking-wide">BOARD</div>
+                         <div class="flex items-center gap-2">
+                            <span class="text-sm font-semibold">{{ ucfirst(Auth::user()->role ?? 'Developer') }}</span>
+                            <div class="w-8 h-8 rounded-full bg-white text-slate-900 flex items-center justify-center font-bold uppercase text-xs">
+                                {{ strtoupper(substr(Auth::user()->name, 0, 2)) }}
+                            </div>
+                        </div>
+                    </div>
 
-    <!-- Board Container -->
-    <div class="px-6 py-5 overflow-x-auto">
-        <div class="flex gap-5 min-w-max items-start">
+                    <!-- Board Container -->
+                    <div class="flex flex-col md:flex-row gap-5 items-start overflow-x-hidden md:overflow-x-auto pb-4">
+                        <div class="flex flex-col md:flex-row gap-5 w-full items-start">
             <!-- Today List -->
-            <div class="w-80 min-w-[320px] bg-amber-100 rounded-lg p-3 flex-shrink-0 shadow">
+            <div class="w-full md:w-80 md:min-w-[320px] bg-amber-100 rounded-lg p-3 flex-shrink-0 shadow">
                 <div class="flex items-center justify-between mb-2">
                     <h2 class="text-sm font-semibold text-amber-900 flex items-center gap-2">
                         Today
@@ -76,7 +92,7 @@
             </div>
 
             <!-- Weekly List -->
-            <div class="w-80 min-w-[320px] bg-sky-100 rounded-lg p-3 flex-shrink-0 shadow">
+            <div class="w-full md:w-80 md:min-w-[320px] bg-sky-100 rounded-lg p-3 flex-shrink-0 shadow">
                 <div class="flex items-center justify-between mb-2">
                     <h2 class="text-sm font-semibold text-sky-900 flex items-center gap-2">
                         Weekly
@@ -104,7 +120,7 @@
             </div>
 
             <!-- Later List -->
-            <div class="w-80 min-w-[320px] bg-pink-100 rounded-lg p-3 flex-shrink-0 shadow">
+            <div class="w-full md:w-80 md:min-w-[320px] bg-pink-100 rounded-lg p-3 flex-shrink-0 shadow">
                 <div class="flex items-center justify-between mb-2">
                     <h2 class="text-sm font-semibold text-rose-900 flex items-center gap-2">
                         Later
@@ -132,17 +148,22 @@
             </div>
 
             <!-- Add Another List Button -->
-            <div class="w-80 min-w-[320px] flex-shrink-0">
+            <div class="w-full md:w-80 md:min-w-[320px] flex-shrink-0">
                 <button class="w-full bg-emerald-300 rounded-lg px-3 py-3 text-left text-sm font-semibold text-emerald-900 hover:bg-emerald-200">
                     + Add Another List
                 </button>
+            </div>
+                        </div>
+                    </div>
+                </main>
             </div>
         </div>
     </div>
 
     <!-- Main Card Modal (Frame 3) -->
-    <div id="card-modal" class="fixed inset-0 bg-black/60 hidden items-center justify-center z-40 backdrop-blur-sm">
-        <div class="bg-[#1e1e1e] text-[#b6c2cf] rounded-xl w-full max-w-[1180px] shadow-2xl relative">
+    <div id="card-modal" class="fixed inset-0 bg-black/60 hidden z-40 backdrop-blur-sm overflow-y-auto">
+        <div class="flex min-h-full items-center justify-center p-0 md:p-4">
+            <div class="bg-[#1e1e1e] text-[#b6c2cf] rounded-none md:rounded-xl w-full max-w-[1180px] shadow-2xl relative min-h-screen md:min-h-0">
             <!-- Header bar -->
             <div class="sticky top-0 z-10 bg-[#1e1e1e] flex items-center justify-between px-6 py-4 border-b border-[#2c333a]">
                 <div class="flex items-center gap-2 relative">
@@ -166,15 +187,15 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-[1fr_400px] gap-8 px-6 pb-8 pt-6">
+            <div class="grid grid-cols-1 md:grid-cols-[1fr_400px] gap-8 px-6 pb-8 pt-24 md:pt-6">
                 <!-- Left main column (scrollable) -->
-                <div class="space-y-6 overflow-y-auto max-h-[75vh] pr-2">
+                <div class="space-y-6 md:overflow-y-auto md:max-h-[75vh] pr-0 md:pr-2">
                     <div class="pb-2">
                         <div class="flex items-start justify-between gap-4">
                             <div class="flex items-start gap-4 flex-1">
                                 <button id="btn-complete-modal" class="mt-1.5 w-6 h-6 rounded-full border border-[#9fadbc] flex items-center justify-center text-[#b6c2cf] text-xs font-bold flex-shrink-0" title="Mark complete"></button>
                                 <div class="flex-1">
-                                    <input id="card-title" type="text" class="mt-1 bg-transparent border-none text-xl font-bold text-[#b6c2cf] focus:ring-0 w-full p-0 placeholder-[#9fadbc]" value="selesaikan fitur anjing">
+                                    <input id="card-title" type="text" class="mt-2 bg-transparent border-none text-xl font-bold text-[#b6c2cf] focus:ring-0 w-full p-0 placeholder-[#9fadbc]" value="selesaikan fitur anjing">
                                 </div>
                             </div>
                         </div>
