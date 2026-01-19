@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BoardCardController;
+use App\Http\Controllers\BoardListController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MidtransNotificationController;
 use App\Http\Controllers\OrderController;
@@ -55,6 +56,9 @@ Route::middleware('auth')->group(function () {
         Route::post('/developer/board/cards', [BoardCardController::class, 'store'])->name('developer.cards.store');
         Route::patch('/developer/board/cards/{card}', [BoardCardController::class, 'update'])->name('developer.cards.update');
         Route::patch('/developer/board/cards/{card}/status', [BoardCardController::class, 'updateStatus'])->name('developer.cards.status');
+        Route::delete('/developer/board/cards/{card}', [BoardCardController::class, 'destroy'])->name('developer.cards.destroy');
+        Route::post('/developer/board/lists', [BoardListController::class, 'store'])->name('developer.lists.store');
+        Route::delete('/developer/board/lists/{list}', [BoardListController::class, 'destroy'])->name('developer.lists.destroy');
     });
 
     Route::middleware('role:admin')->group(function () {

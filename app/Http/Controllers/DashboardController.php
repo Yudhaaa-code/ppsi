@@ -6,6 +6,7 @@ use App\Models\Order;
 use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
@@ -103,7 +104,8 @@ class DashboardController extends Controller
      */
     public function developer()
     {
-        return view('dashboard.developer');
+        $lists = \App\Models\BoardList::where('user_id', Auth::id())->orderBy('position')->get();
+        return view('dashboard.developer', compact('lists'));
     }
 
     /**

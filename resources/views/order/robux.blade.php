@@ -9,7 +9,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
                 <div class="flex-shrink-0">
-                    <span class="text-2xl font-bold tracking-wider">SIX MONKEY'S</span>
+                    <a href="/" class="text-2xl font-bold uppercase tracking-wider hover:text-blue-200 transition">SIX MONKEY'S</a>
                 </div>
                 <div class="hidden md:block">
                     <div class="ml-10 flex items-baseline space-x-4">
@@ -30,11 +30,9 @@
         </div>
     </nav>
 
-    <!-- Hero Image Placeholder -->
-    <div class="bg-gray-400 h-64 flex items-center justify-center">
-        <svg class="h-24 w-24 text-black" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
-        </svg>
+    <!-- Hero Image -->
+    <div class="h-64 w-full overflow-hidden">
+        <img src="{{ asset('images/oke.png') }}" alt="Robux Banner" class="w-full h-full object-cover">
     </div>
 
     <!-- Info Bar -->

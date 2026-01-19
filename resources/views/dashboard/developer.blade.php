@@ -47,114 +47,155 @@
                     <div class="flex items-center justify-between mb-6">
                          <div class="text-white text-sm font-semibold tracking-wide">BOARD</div>
                          <div class="flex items-center gap-2">
-                            <span class="text-sm font-semibold">{{ ucfirst(Auth::user()->role ?? 'Developer') }}</span>
+                            <span class="text-sm font-semibold">{{ Auth::user()->name }}</span>
                             <div class="w-8 h-8 rounded-full bg-white text-slate-900 flex items-center justify-center font-bold uppercase text-xs">
                                 {{ strtoupper(substr(Auth::user()->name, 0, 2)) }}
                             </div>
                         </div>
                     </div>
 
-                    <!-- Board Container -->
-                    <div class="flex flex-col md:flex-row gap-5 items-start overflow-x-hidden md:overflow-x-auto pb-4">
-                        <div class="flex flex-col md:flex-row gap-5 w-full items-start">
-            <!-- Today List -->
-            <div class="w-full md:w-80 md:min-w-[320px] bg-amber-100 rounded-lg p-3 flex-shrink-0 shadow">
-                <div class="flex items-center justify-between mb-2">
-                    <h2 class="text-sm font-semibold text-amber-900 flex items-center gap-2">
-                        Today
-                        <span class="w-4 h-4 border border-amber-900/60 rounded-sm bg-white/40"></span>
-                    </h2>
-                    <div class="flex items-center gap-2">
-                        <button class="p-1 hover:bg-amber-200 rounded" title="List view">
-                            <svg class="w-4 h-4 text-amber-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h10" />
-                            </svg>
-                        </button>
-                        <button class="p-1 hover:bg-amber-200 rounded" title="More">
-                            <svg class="w-4 h-4 text-amber-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01" />
-                            </svg>
+            <!-- Board Container -->
+            <div class="flex flex-col md:flex-row gap-5 items-start overflow-x-hidden md:overflow-x-auto pb-4" id="board-container">
+                <div class="flex flex-col md:flex-row gap-5 w-full items-start" id="lists-wrapper">
+                    <!-- Today List -->
+                    <div class="w-full md:w-80 md:min-w-[320px] bg-amber-100 rounded-lg p-3 flex-shrink-0 shadow" data-list-key="today">
+                        <div class="flex items-center justify-between mb-2">
+                            <h2 class="text-sm font-semibold text-amber-900 flex items-center gap-2">
+                                Today
+                                <span class="w-4 h-4 border border-amber-900/60 rounded-sm bg-white/40"></span>
+                            </h2>
+                            <div class="flex items-center gap-2">
+                                <button class="p-1 hover:bg-amber-200 rounded" title="List view">
+                                    <svg class="w-4 h-4 text-amber-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h10" />
+                                    </svg>
+                                </button>
+                                <button class="p-1 hover:bg-amber-200 rounded" title="More">
+                                    <svg class="w-4 h-4 text-amber-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Cards container -->
+                        <div id="today-cards" class="space-y-2 mb-2 min-h-[10px]">
+                            <!-- cards will be injected here -->
+                        </div>
+
+                        <!-- Add Card button -->
+                        <button
+                            onclick="startInlineAdd('today')"
+                            class="w-full text-left text-xs text-amber-900 px-2 py-1 rounded hover:bg-amber-200">
+                            + Add Card
                         </button>
                     </div>
-                </div>
 
-                <!-- Cards container -->
-                <div id="today-cards" class="space-y-2 mb-2">
-                    <!-- cards will be injected here -->
-                </div>
-
-                <!-- Add Card button -->
-                <button
-                    id="btn-add-today"
-                    class="w-full text-left text-xs text-amber-900 px-2 py-1 rounded hover:bg-amber-200">
-                    + Add Card
-                </button>
-            </div>
-
-            <!-- Weekly List -->
-            <div class="w-full md:w-80 md:min-w-[320px] bg-sky-100 rounded-lg p-3 flex-shrink-0 shadow">
-                <div class="flex items-center justify-between mb-2">
-                    <h2 class="text-sm font-semibold text-sky-900 flex items-center gap-2">
-                        Weekly
-                        <span class="w-4 h-4 border border-sky-900/60 rounded-sm bg-white/40"></span>
-                    </h2>
-                    <div class="flex items-center gap-2">
-                        <button class="p-1 hover:bg-sky-200 rounded" title="List view">
-                            <svg class="w-4 h-4 text-sky-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h10" />
-                            </svg>
-                        </button>
-                        <button class="p-1 hover:bg-sky-200 rounded" title="More">
-                            <svg class="w-4 h-4 text-sky-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01" />
-                            </svg>
+                    <!-- Weekly List -->
+                    <div class="w-full md:w-80 md:min-w-[320px] bg-sky-100 rounded-lg p-3 flex-shrink-0 shadow" data-list-key="weekly">
+                        <div class="flex items-center justify-between mb-2">
+                            <h2 class="text-sm font-semibold text-sky-900 flex items-center gap-2">
+                                Weekly
+                                <span class="w-4 h-4 border border-sky-900/60 rounded-sm bg-white/40"></span>
+                            </h2>
+                            <div class="flex items-center gap-2">
+                                <button class="p-1 hover:bg-sky-200 rounded" title="List view">
+                                    <svg class="w-4 h-4 text-sky-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h10" />
+                                    </svg>
+                                </button>
+                                <button class="p-1 hover:bg-sky-200 rounded" title="More">
+                                    <svg class="w-4 h-4 text-sky-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="week-cards" class="space-y-2 mb-2 min-h-[10px]"></div>
+                        <button
+                            onclick="startInlineAdd('weekly')"
+                            class="w-full text-left text-xs text-sky-900 px-2 py-1 rounded hover:bg-sky-200">
+                            + Add Card
                         </button>
                     </div>
-                </div>
-                <div id="week-cards" class="space-y-2 mb-2"></div>
-                <button
-                    id="btn-add-weekly"
-                    class="w-full text-left text-xs text-sky-900 px-2 py-1 rounded hover:bg-sky-200">
-                    + Add Card
-                </button>
-            </div>
 
-            <!-- Later List -->
-            <div class="w-full md:w-80 md:min-w-[320px] bg-pink-100 rounded-lg p-3 flex-shrink-0 shadow">
-                <div class="flex items-center justify-between mb-2">
-                    <h2 class="text-sm font-semibold text-rose-900 flex items-center gap-2">
-                        Later
-                        <span class="w-4 h-4 border border-rose-900/60 rounded-sm bg-white/40"></span>
-                    </h2>
-                    <div class="flex items-center gap-2">
-                        <button class="p-1 hover:bg-pink-200 rounded" title="List view">
-                            <svg class="w-4 h-4 text-rose-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h10" />
-                            </svg>
-                        </button>
-                        <button class="p-1 hover:bg-pink-200 rounded" title="More">
-                            <svg class="w-4 h-4 text-rose-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01" />
-                            </svg>
+                    <!-- Later List -->
+                    <div class="w-full md:w-80 md:min-w-[320px] bg-pink-100 rounded-lg p-3 flex-shrink-0 shadow" data-list-key="later">
+                        <div class="flex items-center justify-between mb-2">
+                            <h2 class="text-sm font-semibold text-rose-900 flex items-center gap-2">
+                                Later
+                                <span class="w-4 h-4 border border-rose-900/60 rounded-sm bg-white/40"></span>
+                            </h2>
+                            <div class="flex items-center gap-2">
+                                <button class="p-1 hover:bg-pink-200 rounded" title="List view">
+                                    <svg class="w-4 h-4 text-rose-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h10" />
+                                    </svg>
+                                </button>
+                                <button class="p-1 hover:bg-pink-200 rounded" title="More">
+                                    <svg class="w-4 h-4 text-rose-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="later-cards" class="space-y-2 mb-2 min-h-[10px]"></div>
+                        <button
+                            onclick="startInlineAdd('later')"
+                            class="w-full text-left text-xs text-rose-900 px-2 py-1 rounded hover:bg-pink-200">
+                            + Add Card
                         </button>
                     </div>
-                </div>
-                <div id="later-cards" class="space-y-2 mb-2"></div>
-                <button
-                    id="btn-add-later"
-                    class="w-full text-left text-xs text-rose-900 px-2 py-1 rounded hover:bg-pink-200">
-                    + Add Card
-                </button>
-            </div>
 
-            <!-- Add Another List Button -->
-            <div class="w-full md:w-80 md:min-w-[320px] flex-shrink-0">
-                <button class="w-full bg-emerald-300 rounded-lg px-3 py-3 text-left text-sm font-semibold text-emerald-900 hover:bg-emerald-200">
-                    + Add Another List
-                </button>
-            </div>
+                    <!-- Dynamic Lists -->
+                    @foreach($lists as $list)
+                        <div class="w-full md:w-80 md:min-w-[320px] bg-slate-100 rounded-lg p-3 flex-shrink-0 shadow" data-list-id="{{ $list->id }}">
+                            <div class="flex items-center justify-between mb-2">
+                                <h2 class="text-sm font-semibold text-slate-900 flex items-center gap-2">
+                                    {{ $list->title }}
+                                </h2>
+                                <div class="flex items-center gap-2">
+                                    <button class="p-1 hover:bg-slate-200 rounded" title="List view">
+                                        <svg class="w-4 h-4 text-slate-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h10" />
+                                        </svg>
+                                    </button>
+                                    <div class="relative">
+                                        <button onclick="toggleListMenu(event, '{{ $list->id }}')" class="p-1 hover:bg-slate-200 rounded" title="More">
+                                            <svg class="w-4 h-4 text-slate-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01" />
+                                            </svg>
+                                        </button>
+                                        <div id="list-menu-{{ $list->id }}" class="hidden absolute right-0 top-8 bg-white shadow-md rounded border border-gray-200 w-32 z-10">
+                                            <button onclick="deleteList('{{ $list->id }}')" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50">Delete List</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="list-cards-{{ $list->id }}" class="space-y-2 mb-2 min-h-[10px]"></div>
+                            <button
+                                onclick="startInlineAdd(null, {{ $list->id }})"
+                                class="w-full text-left text-xs text-slate-900 px-2 py-1 rounded hover:bg-slate-200">
+                                + Add Card
+                            </button>
+                        </div>
+                    @endforeach
+
+                    <!-- Add Another List Button -->
+                    <div class="w-full md:w-80 md:min-w-[320px] flex-shrink-0" id="add-list-wrapper">
+                        <button id="btn-add-list-toggle" class="w-full bg-emerald-300 rounded-lg px-3 py-3 text-left text-sm font-semibold text-emerald-900 hover:bg-emerald-200 transition-colors">
+                            + Add Another List
+                        </button>
+                        <div id="form-add-list" class="hidden bg-emerald-100 rounded-lg p-3">
+                            <input type="text" id="new-list-title" class="w-full bg-white border border-emerald-300 rounded px-3 py-2 text-sm text-emerald-900 placeholder-emerald-700/50 mb-2 focus:ring-2 focus:ring-emerald-500 focus:outline-none" placeholder="Enter list title...">
+                            <div class="flex items-center gap-2">
+                                <button id="btn-add-list-submit" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded text-sm font-semibold">Add List</button>
+                                <button id="btn-add-list-cancel" class="text-emerald-900 hover:text-emerald-700 px-2 py-1.5 text-sm"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+                            </div>
                         </div>
                     </div>
+                </div>
+            </div>
                 </main>
             </div>
         </div>
@@ -162,8 +203,8 @@
 
     <!-- Main Card Modal (Frame 3) -->
     <div id="card-modal" class="fixed inset-0 bg-black/60 hidden z-40 backdrop-blur-sm overflow-y-auto">
-        <div class="flex min-h-full items-center justify-center p-0 md:p-4">
-            <div class="bg-[#1e1e1e] text-[#b6c2cf] rounded-none md:rounded-xl w-full max-w-[1180px] shadow-2xl relative min-h-screen md:min-h-0">
+        <div class="flex min-h-full items-center justify-center p-0 md:p-4 w-full">
+            <div class="bg-[#1e1e1e] text-[#b6c2cf] rounded-none md:rounded-xl w-full max-w-[1180px] shadow-2xl relative min-h-screen md:min-h-0 mx-auto">
             <!-- Header bar -->
             <div class="sticky top-0 z-10 bg-[#1e1e1e] flex items-center justify-between px-6 py-4 border-b border-[#2c333a]">
                 <div class="flex items-center gap-2 relative">
@@ -175,11 +216,14 @@
                         <option value="today">Today</option>
                         <option value="weekly">Weekly</option>
                         <option value="later">Later</option>
+                        @foreach($lists as $list)
+                            <option value="{{ $list->id }}">{{ $list->title }}</option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="flex items-center gap-4 text-[#9fadbc]">
                     <button class="hover:text-[#b6c2cf]"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path></svg></button>
-                    <button class="hover:text-[#b6c2cf]"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg></button>
+                    <button id="btn-delete-card" class="hover:text-red-400" title="Delete Card"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
                     <button class="hover:text-[#b6c2cf]"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"></path></svg></button>
                     <button id="card-modal-close" class="hover:text-[#b6c2cf] hover:bg-[#A6C5E229] rounded-full p-1 transition-colors">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
@@ -1003,12 +1047,20 @@
             modal.classList.remove('flex');
         }
 
-        function startInlineAdd(listKey) {
+        function startInlineAdd(listKey, listId = null) {
             if (currentInlineAddEl) {
                 currentInlineAddEl.remove();
                 currentInlineAddEl = null;
             }
-            const container = listKey === 'weekly' ? weekContainer : listKey === 'later' ? laterContainer : todayContainer;
+            let container;
+            if (listId) {
+                container = document.getElementById(`list-cards-${listId}`);
+            } else {
+                container = listKey === 'weekly' ? weekContainer : listKey === 'later' ? laterContainer : todayContainer;
+            }
+            
+            if (!container) return;
+
             const el = document.createElement('div');
             el.className = 'bg-transparent mb-2';
             el.innerHTML = `
@@ -1034,7 +1086,8 @@
                 const payload = {
                     title,
                     description: null,
-                    list_key: listKey,
+                    list_key: listKey || 'today',
+                    board_list_id: listId,
                     due_date: null,
                     start_date: null,
                     completed: false,
@@ -1077,9 +1130,6 @@
             });
             input.focus();
         }
-        btnAddToday.addEventListener('click', () => startInlineAdd('today'));
-        btnAddWeekly.addEventListener('click', () => startInlineAdd('weekly'));
-        btnAddLater.addEventListener('click', () => startInlineAdd('later'));
 
         // if user changes select manually, update target list
         listSelect.addEventListener('change', (e) => {
@@ -1138,31 +1188,30 @@
             // Dark theme base
             let baseClasses = 'bg-[#22272b] text-[#b6c2cf] border-[#384148] hover:border-[#85b8ff]';
             
-            // Minimal color hint based on list_key if desired, or just stick to unified dark theme
-            // Image 3 and 4 show consistent dark style.
-            
             cardEl.className = `${baseClasses} rounded-lg shadow-sm border p-0 cursor-pointer group relative overflow-hidden mb-2`;
             
             // Cover
             let coverHtml = '';
             if (attachments.length > 0) {
                 const first = attachments[0];
-                coverHtml = `
-                    <div class="w-full h-28 bg-[#1d2125] relative overflow-hidden">
-                        <img src="${first.url}" alt="${first.name}" class="w-full h-28 object-cover" onerror="this.style.display='none'">
-                    </div>
-                `;
+                if (first && first.url) {
+                    coverHtml = `
+                        <div class="w-full h-28 bg-[#1d2125] relative overflow-hidden">
+                            <img src="${first.url}" alt="${first.name || 'attachment'}" class="w-full h-28 object-cover" onerror="this.style.display='none'">
+                        </div>
+                    `;
+                }
             }
             // Labels
             const labelsHtml = labels.length ? `<div class="flex flex-wrap gap-1 mb-1.5 px-3 pt-3">${labels.map(l => {
-                const found = LABEL_OPTIONS.find(o => o.key === l);
+                const found = (typeof LABEL_OPTIONS !== 'undefined' ? LABEL_OPTIONS : []).find(o => o.key === l);
                 const cls = found ? found.class : 'bg-gray-400';
                 return `<span class="h-1.5 w-10 rounded-full ${cls}"></span>`;
             }).join('')}</div>` : '<div class="pt-3"></div>';
 
             // Title with complete toggle
             const toggleHtml = `<button aria-label="complete-toggle" title="${completed ? 'Mark incomplete' : 'Mark complete'}" class="${completed ? 'inline-flex items-center justify-center w-4 h-4 rounded-full bg-[#4bce97] text-[#1d2125]' : 'inline-flex items-center justify-center w-4 h-4 rounded-full border border-[#9fadbc] text-[#9fadbc]'}">${completed ? '<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>' : ''}</button>`;
-            const titleHtml = `<div class="px-3 mb-2 text-sm font-semibold text-[#b6c2cf] flex items-center gap-2">${toggleHtml}<span class="truncate">${title}</span></div>`;
+            const titleHtml = `<div class="px-3 mb-2 text-sm font-semibold text-[#b6c2cf] flex items-center gap-2">${toggleHtml}<span class="truncate">${title || 'Untitled'}</span></div>`;
 
             // Footer
             let footerHtml = '<div class="px-3 pb-3 flex items-center flex-wrap gap-3 text-[#9fadbc]">';
@@ -1170,16 +1219,18 @@
             // Date
             if (due_date) {
                  const d = new Date(due_date);
-                 const isDueSoon = true; 
-                 const dateClass = completed ? 'bg-[#4bce97] text-[#1d2125]' : (isDueSoon ? 'bg-[#e2b203] text-[#1d2125]' : 'text-[#9fadbc]');
-                 const iconColor = 'text-[#1d2125]';
-                 
-                 footerHtml += `
-                    <div class="flex items-center gap-1.5 px-1.5 py-0.5 rounded-[3px] text-xs font-medium ${dateClass}">
-                        <svg class="w-3.5 h-3.5 ${iconColor}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        <span>${d.toLocaleDateString('en-US', {day:'numeric', month:'short'})}</span>
-                    </div>
-                 `;
+                 if (!isNaN(d)) {
+                     const isDueSoon = true; 
+                     const dateClass = completed ? 'bg-[#4bce97] text-[#1d2125]' : (isDueSoon ? 'bg-[#e2b203] text-[#1d2125]' : 'text-[#9fadbc]');
+                     const iconColor = 'text-[#1d2125]';
+                     
+                     footerHtml += `
+                        <div class="flex items-center gap-1.5 px-1.5 py-0.5 rounded-[3px] text-xs font-medium ${dateClass}">
+                            <svg class="w-3.5 h-3.5 ${iconColor}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            <span>${d.toLocaleDateString('en-US', {day:'numeric', month:'short'})}</span>
+                        </div>
+                     `;
+                 }
             }
 
             // Attachments
@@ -1211,7 +1262,9 @@
             if (members.length > 0) {
                  footerHtml += `<div class="flex -space-x-1.5">`;
                  members.forEach(m => {
-                     footerHtml += `<div class="w-6 h-6 rounded-full bg-[#705dfe] border-2 border-[#22272b] flex items-center justify-center text-[9px] font-bold text-white uppercase shadow-sm" title="${m.name}">${m.initials || 'Y'}</div>`;
+                     if (m) {
+                        footerHtml += `<div class="w-6 h-6 rounded-full bg-[#705dfe] border-2 border-[#22272b] flex items-center justify-center text-[9px] font-bold text-white uppercase shadow-sm" title="${m.name || ''}">${m.initials || 'Y'}</div>`;
+                     }
                  });
                  footerHtml += `</div>`;
             }
@@ -1224,18 +1277,22 @@
 
         btnSaveCard.addEventListener('click', async () => {
             const title = titleInput.value.trim() || 'Untitled';
-            const listKey = currentList || 'today';
             const description = descInput.value.trim() || null;
             const dueDate = currentDueDate;
             const checklist = checklistItems;
             const attachPayload = attachments;
             const activitiesPayload = activities;
 
+            const isStatic = ['today', 'weekly', 'later'].includes(currentList);
+            const listKey = isStatic ? currentList : null;
+            const boardListId = isStatic ? null : currentList;
+
             try {
                 const payload = {
                     title: title,
                     description: description,
                     list_key: listKey,
+                    board_list_id: boardListId,
                     due_date: dueDate,
                     completed: currentCompleted,
                     labels: selectedLabels,
@@ -1640,6 +1697,7 @@
                 members: selectedMembers,
                 checklist: checklistItems,
                 attachments: attachments,
+                activities: activities,
             };
         }
         function scheduleAutoSave() {
@@ -2104,6 +2162,167 @@
             commentsContainer?.prepend(el);
         });
 
+        // Add List Logic
+        const btnAddListToggle = document.getElementById('btn-add-list-toggle');
+        const formAddList = document.getElementById('form-add-list');
+        const btnAddListSubmit = document.getElementById('btn-add-list-submit');
+        const btnAddListCancel = document.getElementById('btn-add-list-cancel');
+        const newListTitleInput = document.getElementById('new-list-title');
+
+        if (btnAddListToggle && formAddList) {
+            btnAddListToggle.addEventListener('click', () => {
+                btnAddListToggle.classList.add('hidden');
+                formAddList.classList.remove('hidden');
+                newListTitleInput.focus();
+            });
+
+            const hideAddListForm = () => {
+                formAddList.classList.add('hidden');
+                btnAddListToggle.classList.remove('hidden');
+                newListTitleInput.value = '';
+            };
+
+            btnAddListCancel.addEventListener('click', hideAddListForm);
+
+            btnAddListSubmit.addEventListener('click', async () => {
+                const title = newListTitleInput.value.trim();
+                if (!title) return;
+
+                try {
+                    const response = await fetch('{{ route('developer.lists.store') }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': csrfToken,
+                            'Accept': 'application/json',
+                        },
+                        body: JSON.stringify({ title }),
+                    });
+
+                    if (!response.ok) throw new Error('Failed to create list');
+                    
+                    const newList = await response.json();
+                    appendNewListToDom(newList);
+                    hideAddListForm();
+                } catch (err) {
+                    alert('Gagal membuat list: ' + err.message);
+                }
+            });
+            
+            newListTitleInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') btnAddListSubmit.click();
+                if (e.key === 'Escape') hideAddListForm();
+            });
+        }
+
+        const btnDeleteCard = document.getElementById('btn-delete-card');
+        if (btnDeleteCard) {
+            btnDeleteCard.addEventListener('click', async () => {
+                if (!currentCard || !currentCard.id) return;
+                
+                if (!confirm('Are you sure you want to delete this card?')) return;
+                
+                try {
+                    const res = await fetch(`{{ url('/developer/board/cards') }}/${currentCard.id}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': csrfToken,
+                            'Accept': 'application/json',
+                        }
+                    });
+                    
+                    if (!res.ok) throw new Error('Failed to delete card');
+                    
+                    document.getElementById('card-modal').classList.add('hidden');
+                    loadCards();
+                } catch (e) {
+                    alert('Gagal menghapus kartu: ' + e.message);
+                }
+            });
+        }
+
+        function toggleListMenu(e, listId) {
+            e.stopPropagation();
+            const menu = document.getElementById(`list-menu-${listId}`);
+            if (menu) {
+                // Close others
+                document.querySelectorAll('[id^="list-menu-"]').forEach(el => {
+                    if (el.id !== `list-menu-${listId}`) el.classList.add('hidden');
+                });
+                menu.classList.toggle('hidden');
+            }
+        }
+        
+        // Close menus when clicking outside
+        document.addEventListener('click', () => {
+             document.querySelectorAll('[id^="list-menu-"]').forEach(el => el.classList.add('hidden'));
+        });
+
+        async function deleteList(listId) {
+            if (!confirm('Are you sure you want to delete this list and all its cards?')) return;
+            
+            try {
+                const res = await fetch(`{{ url('/developer/board/lists') }}/${listId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken,
+                        'Accept': 'application/json',
+                    }
+                });
+                
+                if (!res.ok) throw new Error('Failed to delete list');
+                
+                // Remove from DOM
+                const listEl = document.querySelector(`div[data-list-id="${listId}"]`);
+                if (listEl) listEl.remove();
+                
+            } catch (e) {
+                alert('Gagal menghapus list: ' + e.message);
+            }
+        }
+
+        function appendNewListToDom(list) {
+            const wrapper = document.getElementById('lists-wrapper');
+            const addListWrapper = document.getElementById('add-list-wrapper');
+            
+            const listEl = document.createElement('div');
+            listEl.className = 'w-full md:w-80 md:min-w-[320px] bg-slate-100 rounded-lg p-3 flex-shrink-0 shadow';
+            listEl.dataset.listId = list.id;
+            
+            listEl.innerHTML = `
+                <div class="flex items-center justify-between mb-2">
+                    <h2 class="text-sm font-semibold text-slate-900 flex items-center gap-2">
+                        ${list.title}
+                    </h2>
+                    <div class="flex items-center gap-2">
+                        <button class="p-1 hover:bg-slate-200 rounded" title="List view">
+                            <svg class="w-4 h-4 text-slate-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h10" />
+                            </svg>
+                        </button>
+                        <div class="relative">
+                            <button onclick="toggleListMenu(event, '${list.id}')" class="p-1 hover:bg-slate-200 rounded" title="More">
+                                <svg class="w-4 h-4 text-slate-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01" />
+                                </svg>
+                            </button>
+                            <div id="list-menu-${list.id}" class="hidden absolute right-0 top-8 bg-white shadow-md rounded border border-gray-200 w-32 z-10">
+                                <button onclick="deleteList('${list.id}')" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50">Delete List</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="list-cards-${list.id}" class="space-y-2 mb-2 min-h-[10px]"></div>
+                <button
+                    onclick="startInlineAdd(null, ${list.id})"
+                    class="w-full text-left text-xs text-slate-900 px-2 py-1 rounded hover:bg-slate-200">
+                    + Add Card
+                </button>
+            `;
+            
+            wrapper.insertBefore(listEl, addListWrapper);
+        }
+
         // Load cards on start
         async function loadCards() {
             try {
@@ -2112,26 +2331,56 @@
                 });
                 if (!response.ok) throw new Error('Failed to load cards');
                 const cards = await response.json();
+                
+                // Clear static lists
                 todayContainer.innerHTML = '';
                 weekContainer.innerHTML = '';
                 laterContainer.innerHTML = '';
+                
+                // Clear dynamic lists
+                document.querySelectorAll('[id^="list-cards-"]').forEach(el => el.innerHTML = '');
+
                 cards.forEach((c) => {
-                    const cardEl = createCardElement(c);
-                    attachCardHandlers(cardEl, c);
-                    if (c.list_key === 'weekly') {
+                    try {
+                        const cardEl = createCardElement(c);
+                        attachCardHandlers(cardEl, c);
+                        
+                        let appended = false;
+                        if (c.board_list_id) {
+                            const dynContainer = document.getElementById(`list-cards-${c.board_list_id}`);
+                            if (dynContainer) {
+                                dynContainer.appendChild(cardEl);
+                                appended = true;
+                            }
+                        }
+                        
+                        if (!appended) {
+                    if (c.board_list_id) {
+                         // If card belongs to a dynamic list but container not found, do not put in static lists.
+                         // This prevents "ghost" cards appearing in Today when they should be in a custom list.
+                         console.warn('Card belongs to list ' + c.board_list_id + ' but container not found.');
+                    } else if (c.list_key === 'weekly') {
                         weekContainer.appendChild(cardEl);
                     } else if (c.list_key === 'later') {
                         laterContainer.appendChild(cardEl);
                     } else {
                         todayContainer.appendChild(cardEl);
                     }
+                }
+                    } catch (e) {
+                        console.error('Error rendering card:', c, e);
+                    }
                 });
             } catch (err) {
-                console.error(err);
+                console.error('Error loading cards:', err);
             }
         }
 
-        document.addEventListener('DOMContentLoaded', loadCards);
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', loadCards);
+        } else {
+            loadCards();
+        }
     </script>
     <!-- Delete Confirmation Popover -->
     <div id="delete-confirm-popover" class="hidden fixed z-[100] bg-[#282e33] border border-[#3b444c] rounded-lg shadow-xl w-72 p-0 text-[#b6c2cf]">

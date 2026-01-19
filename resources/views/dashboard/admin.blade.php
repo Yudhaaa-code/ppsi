@@ -61,12 +61,12 @@ $statistik = [
     </div>
 </div>
 
-<div class="flex relative">
+<div class="flex flex-col md:flex-row relative">
     <!-- Overlay -->
     <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/80 z-40 hidden transition-opacity backdrop-blur-sm md:hidden"></div>
 
     <!-- Sidebar -->
-    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 min-h-screen p-6 bg-[#081f3f] transform -translate-x-full transition-transform duration-300 md:translate-x-0 md:static md:block shadow-2xl md:shadow-none border-r border-white/10 md:border-none">
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 min-h-screen p-6 bg-[#081f3f] md:bg-transparent transform -translate-x-full md:translate-x-0 transition-transform duration-300 md:relative shadow-2xl md:shadow-none border-r border-white/10 md:border-none">
         <div class="flex justify-between items-center mb-8">
             <a href="{{ route('home') }}">
                 <h1 class="text-xl font-bold hover:text-gray-300 transition">SIX MONKEY'S</h1>

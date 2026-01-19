@@ -11,6 +11,7 @@ class BoardCard extends Model
 
     protected $fillable = [
         'user_id',
+        'board_list_id',
         'title',
         'description',
         'list_key',
@@ -18,6 +19,7 @@ class BoardCard extends Model
         'due_date',
         'start_date',
         'labels',
+        'members',
         'checklist',
         'attachments',
         'activities',
@@ -33,4 +35,9 @@ class BoardCard extends Model
         'attachments' => 'array',
         'activities' => 'array',
     ];
+
+    public function boardList()
+    {
+        return $this->belongsTo(BoardList::class);
+    }
 }

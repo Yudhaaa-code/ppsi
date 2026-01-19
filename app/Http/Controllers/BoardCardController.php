@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\BoardCard;
+use App\Models\BoardList;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
@@ -26,7 +27,8 @@ class BoardCardController extends Controller
             $data = $request->validate([
                 'title' => ['required', 'string', 'max:255'],
                 'description' => ['nullable', 'string'],
-                'list_key' => ['required', 'in:today,weekly,later'],
+                'list_key' => ['nullable', 'string'],
+                'board_list_id' => ['nullable', 'exists:board_lists,id'],
                 'due_date' => ['nullable', 'date'],
                 'start_date' => ['nullable', 'date'],
                 'completed' => ['nullable', 'boolean'],
@@ -47,11 +49,23 @@ class BoardCardController extends Controller
                 'members.*.initials' => ['required_with:members', 'string'],
             ]);
 
+            $boardListId = $data['board_list_id'] ?? null;
+            if (!$boardListId && !empty($data['list_key'])) {
+                $listTitle = ucfirst($data['list_key']);
+                $list = BoardList::where('user_id', Auth::id())
+                    ->where('title', $listTitle)
+                    ->first();
+                if ($list) {
+                    $boardListId = $list->id;
+                }
+            }
+
             $payload = [
                 'user_id' => Auth::id(),
                 'title' => $data['title'],
                 'description' => $data['description'] ?? null,
-                'list_key' => $data['list_key'],
+                'list_key' => $boardListId ? null : ($data['list_key'] ?? 'today'),
+                'board_list_id' => $boardListId,
                 'due_date' => $data['due_date'] ?? null,
                 'labels' => $data['labels'] ?? [],
                 'checklist' => $data['checklist'] ?? [],
@@ -63,9 +77,9 @@ class BoardCardController extends Controller
                 $payload['attachments'] = $data['attachments'] ?? [];
             }
             if (Schema::hasColumn('board_cards', 'activities')) {
-            $payload['activities'] = $data['activities'] ?? [];
-        }
-        if (Schema::hasColumn('board_cards', 'members')) {
+                $payload['activities'] = $data['activities'] ?? [];
+            }
+            if (Schema::hasColumn('board_cards', 'members')) {
                 $payload['members'] = $data['members'] ?? [];
             }
 
@@ -91,8 +105,10 @@ class BoardCardController extends Controller
         $data = $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
-            'list_key' => ['required', 'in:today,weekly,later'],
+            'list_key' => ['nullable', 'string'],
+            'board_list_id' => ['nullable', 'exists:board_lists,id'],
             'due_date' => ['nullable', 'date'],
+            'start_date' => ['nullable', 'date'],
             'completed' => ['nullable', 'boolean'],
             'labels' => ['nullable', 'array'],
             'labels.*' => ['string'],
@@ -111,11 +127,27 @@ class BoardCardController extends Controller
             'members.*.initials' => ['required_with:members', 'string'],
         ]);
 
+        $boardListId = $data['board_list_id'] ?? $card->board_list_id;
+        if (isset($data['board_list_id'])) {
+             // Use provided
+        } elseif (isset($data['list_key']) && $data['list_key'] !== $card->list_key) {
+             // Try to resolve
+             $listTitle = ucfirst($data['list_key']);
+             $list = BoardList::where('user_id', Auth::id())
+                 ->where('title', $listTitle)
+                 ->first();
+             if ($list) {
+                 $boardListId = $list->id;
+             }
+        }
+
         $updates = [
             'title' => $data['title'],
             'description' => $data['description'] ?? null,
-            'list_key' => $data['list_key'],
+            'list_key' => $data['list_key'] ?? $card->list_key,
+            'board_list_id' => $boardListId,
             'due_date' => $data['due_date'] ?? null,
+            'start_date' => $data['start_date'] ?? null,
             'labels' => $data['labels'] ?? [],
             'checklist' => $data['checklist'] ?? [],
         ];
@@ -127,6 +159,9 @@ class BoardCardController extends Controller
         }
         if (Schema::hasColumn('board_cards', 'members')) {
             $updates['members'] = $data['members'] ?? [];
+        }
+        if (Schema::hasColumn('board_cards', 'activities')) {
+            $updates['activities'] = $data['activities'] ?? [];
         }
 
         $card->update($updates);
@@ -148,6 +183,13 @@ class BoardCardController extends Controller
         }
 
         return response()->json($card);
+    }
+
+    public function destroy(BoardCard $card)
+    {
+        $this->authorizeCard($card);
+        $card->delete();
+        return response()->json(['message' => 'Card deleted']);
     }
 
     private function authorizeCard(BoardCard $card): void
